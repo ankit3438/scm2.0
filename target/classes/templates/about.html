@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base::parent(~{::#content},~{::title},~{::script})}"><!--if there is no script in page just pass"~{}"instead of ~{::script}-->
+<head>
+    <title>About Page</title>
+</head>
+<body>
+    <section id="content">
+        <h1>welcome to about page</h1>
+    </section>
+    <script>
+        console.log("about page")
+    </script>
+</body>
+</html>
