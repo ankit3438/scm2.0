@@ -4,6 +4,8 @@ import java.util.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,9 +33,12 @@ public class User {
     private String password;
     private String about;
     private String profilePic;
+    private String phoneNumber;
     private boolean enabled=false;
     private boolean emailVerified=false;
     private boolean phoneVerified=false;
+
+    @Enumerated(value = EnumType.STRING)
     private providers provider=providers.SELF;
     private String providerUserId;
 
