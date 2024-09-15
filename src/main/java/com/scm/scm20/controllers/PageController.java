@@ -10,7 +10,11 @@ import org.springframework.ui.Model;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.scm.scm20.entities.User;
 import com.scm.scm20.forms.UserForm;
+import com.scm.scm20.helpers.Message;
+import com.scm.scm20.helpers.MessageType;
 import com.scm.scm20.services.UserService;
+
+import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -49,7 +53,7 @@ public class PageController {
     }
 
     @PostMapping("/do-register")
-    public String processRegister(@ModelAttribute UserForm userForm){
+    public String processRegister(@ModelAttribute UserForm userForm,HttpSession session){
         //fetch form date
         //User form me store karwayenge
         //validate karenge
@@ -78,6 +82,11 @@ public class PageController {
 
 
         User savadUser=userService.saveUser(user);
+
+        Message message=Message.builder().content("Registration Successful").type(MessageType.green).build();
+
+        session.setAttribute("message",message);
+
         System.out.println("user saved");
         //redirect to register page
         return "redirect:/register";
