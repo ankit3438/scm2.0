@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.scm.scm20.entities.User;
@@ -15,6 +16,7 @@ import com.scm.scm20.helpers.MessageType;
 import com.scm.scm20.services.UserService;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 
 @Controller
@@ -53,13 +55,15 @@ public class PageController {
     }
 
     @PostMapping("/do-register")
-    public String processRegister(@ModelAttribute UserForm userForm,HttpSession session){
+    public String processRegister(@Valid @ModelAttribute UserForm userForm, BindingResult rBindingResult, HttpSession session){
         //fetch form date
         //User form me store karwayenge
         //validate karenge
         //save to database
         //message ="registration successfull"
         System.out.println(userForm.toString());
+
+        if(rBindingResult.hasErrors())return "register";
 
         //userForm -> user banaya h kyu ki userform me pura data nahi tha
 
