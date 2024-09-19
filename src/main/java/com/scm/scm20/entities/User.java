@@ -33,6 +33,7 @@ import lombok.Setter;
 @Builder
 @Entity(name = "user")
 public class User implements UserDetails {
+    public static User user1;
     @Id
     private String userId;
     @Column(name = "user_name",nullable = false)

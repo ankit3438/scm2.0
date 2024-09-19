@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.Customizer;
 
 import com.scm.scm20.serviceImpementation.SecurityCustomUserDetailService;
 
@@ -19,6 +20,9 @@ public class SecurityConfig {
 
     @Autowired
     private SecurityCustomUserDetailService userDetailService;
+
+    @Autowired
+    private OAuthAuthenticationSuccessHandler handler;
 
     //configuration for authentication provider uses : password encoder to encode passeword enterred by login also done matching password by getting user from user detail servide and match password with entered password
     @Bean
@@ -54,8 +58,15 @@ public class SecurityConfig {
             logoutForm.logoutSuccessUrl("/login?logout=true");
         });
 
+        //oauth configuration
+        httpSecurity.oauth2Login(oauth -> oauth
+        .loginPage("/login")
+        .successHandler(handler)
+        ); 
+
         return httpSecurity.build();
     }
+
 
     // used password encoder 
     @Bean
