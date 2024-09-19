@@ -5,13 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.server.SecurityWebFilterChain;
 
 import com.scm.scm20.serviceImpementation.SecurityCustomUserDetailService;
 
@@ -38,8 +36,24 @@ public class SecurityConfig {
         });
 
         //agar form login se related kuch kaam huya toh yaha aayenge
-        httpSecurity.formLogin(Customizer.withDefaults());
-        
+        httpSecurity.formLogin(formLogin-> formLogin
+            .loginPage("/login")
+            .loginProcessingUrl("/authenticate")
+            //.successForwardUrl("/user/dashboard")
+            //formLogin.failureForwardUrl("/login?error=true");
+            .usernameParameter("email")
+            .passwordParameter("password")
+            .defaultSuccessUrl("/user/dashboard",true)
+            .permitAll()
+        );
+
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+
+        httpSecurity.logout(logoutForm->{
+            logoutForm.logoutUrl("/do-logout");
+            logoutForm.logoutSuccessUrl("/login?logout=true");
+        });
+
         return httpSecurity.build();
     }
 
